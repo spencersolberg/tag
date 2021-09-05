@@ -3,6 +3,7 @@ import preprocess from "svelte-preprocess";
 const config = {
     kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
+        adapater: require("@sveltejs/adapter-static")(),
 		target: '#svelte'
 	},
 
