@@ -6,7 +6,7 @@
     let typing = false;
     let loading = false;
     let tags = [];
-
+    
     const updateSearchTerm = () => {
         let currentSearchTerm = String(searchTerm);
         console.log(searchTerm);
@@ -30,6 +30,8 @@
             }
         }, 1500);
     };
+
+
 </script>
 
 <svelte:head>
