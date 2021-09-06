@@ -6,7 +6,7 @@
     let typing = false;
     let loading = false;
     let tags = [];
-    
+
     const updateSearchTerm = () => {
         let currentSearchTerm = String(searchTerm);
         console.log(searchTerm);
@@ -35,10 +35,10 @@
 </script>
 
 <svelte:head>
-    <title>Tag</title>
+    <title>Tags.Town</title>
 </svelte:head>
 
-<h1 class="text-4xl text-center my-8 uppercase dark:text-white">Tag</h1>
+<h1 class="text-4xl text-center my-8 uppercase dark:text-white">Tags.Town</h1>
 
 <input
     class="w-full rounded-md text-lg p-4 border-2 border-gray-200"
