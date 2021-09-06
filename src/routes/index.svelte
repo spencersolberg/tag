@@ -59,7 +59,7 @@
         {tags.length} tag{tags.length == 1 ? "" : "s"}
     </p>
 
-    <div class="py-4 grid gap-4 md:grid-cols-2 grid-cols-1">
+    <div class="py-4 grid gap-y-4 gap-x-5 md:grid-cols-2 grid-cols-1">
         {#each tags as tag}
             <div in:fade>
                 <TagCard {tag} />

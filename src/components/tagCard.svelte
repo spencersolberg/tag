@@ -5,7 +5,7 @@
 
 <a
   href="/tag/{tag.id}"
-  class="p-6 bg-gray-900 text-white dark:bg-white dark:text-black text-center rounded-md shadow-sm hover:shadow-md flex flex-col items-center transition-transform transform transform-gpu motion-safe:hover:scale-105"
+  class="p-6 bg-gray-900 text-white dark:bg-white dark:text-black text-center rounded-md shadow-sm hover:shadow-md flex flex-col items-center transition-transform transform transform-gpu {!pulsing ? "motion-safe:hover:scale-105" : "scale-95"}"
   on:click={() => pulsing = true}
 >
 <h4 class="text-xl md:line-clamp-1 font-bold {pulsing ? "animate-pulse" : ""}">{tag.title}</h4>
