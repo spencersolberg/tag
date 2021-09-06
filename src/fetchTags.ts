@@ -43,35 +43,6 @@ export const fetchTags = async (searchTerm: string): Promise<Tag[]> => {
     const url = `https://api.tags.town/search/${encodeURIComponent(searchTerm)}`;
     const res = await fetch(url);
     const data = await res.json();
-    // if (data?.tags?.tag?.length) {
-    //     let tags = data.tags.tag.map((t) => new Object({
 
-    //         id: t.id,
-    //         title: t.Title,
-    //         key: t.WritKey?.split(":")[1] ?? undefined,
-    //         tonality: t.WritKey?.split(":")[0] ?? undefined,
-    //         arranger: t.Arranger ?? t.SungBy ?? t.Quartet ?? t.Teacher ?? t.Provider ?? undefined,
-    //         type: t.Type ?? undefined,
-    //         parts: t.Parts ?? undefined,
-    //         rating: t.Rating ?? undefined,
-    //         ratingCount: t.RatingCount ?? undefined
-    //     }));
-    //     return tags;
-    // } else if (data?.tags?.tag) {
-    //     let t = data.tags.tag;
-    //     return [ {
-    //         id: t.id,
-    //         title: t.Title,
-    //         key: t.WritKey?.split(":")[1] ?? undefined,
-    //         tonality: t.WritKey?.split(":")[0] ?? undefined,
-    //         arranger: t.Arranger ?? t.SungBy ?? t.Quartet ?? t.Teacher ?? t.Provider ?? undefined,
-    //         type: t.Type ?? undefined,
-    //         parts: t.Parts ?? undefined,
-    //         rating: t.Rating ?? undefined,
-    //         ratingCount: t.RatingCount ?? undefined
-    //     }];
-        
-    // }
-    // console.log(tags);
     return data;
 };

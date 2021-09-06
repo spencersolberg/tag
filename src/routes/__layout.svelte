@@ -3,7 +3,7 @@
     import { session } from "$app/stores";
     import supabase from "$lib/db";
     import { browser } from "$app/env";
-    
+
 
     if (browser) {
         $session = supabase.auth.session()
@@ -19,6 +19,7 @@
 </script>
 
 <svelte:head>
+    <meta name="theme-color" content="rgba(17, 24, 39, 1)">
     <style>
         body {
             @apply dark:bg-gray-900;

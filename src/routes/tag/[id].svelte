@@ -1,5 +1,15 @@
-<script>
-    import { page } from "$app/stores";
+<script context="module">
+    export async function load({ page }) {
+        const id = page.params.id;
+        const url = `https://api.tags.town/tag/${id}`;
+        const res = await fetch(url);
+        const tag = await res.json();
+        return { props: { tag } };
+    }
 </script>
-
-<h1 class="text-4xl text-center mb-8 uppercase dark:text-white font-medium">{$page.params.id}</h1>
+<script>
+    export let tag;
+</script>
+<h1 class="text-4xl text-center mb-8 uppercase dark:text-white font-medium">
+    {tag.title}
+</h1>
