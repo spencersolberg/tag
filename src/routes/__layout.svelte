@@ -3,6 +3,7 @@
     import { session } from "$app/stores";
     import supabase from "$lib/db";
     import { browser } from "$app/env";
+    
 
     if (browser) {
         $session = supabase.auth.session()
@@ -25,7 +26,7 @@
     </style>
 </svelte:head>
 
-<nav class="flex justify-center w-full">
+<nav class="mt-2 flex justify-center w-full">
   <a class="mx-4 text-lg dark:text-white" href="/">Home</a>
   <a class="mx-4 text-lg dark:text-white" href="/about">About</a>
   {#if !$session}

@@ -44,7 +44,7 @@ import { goto } from "$app/navigation";
 <svelte:head>
     <title>Tags.Town - Auth</title>
 </svelte:head>
-<h1 class="text-4xl text-center my-8 uppercase dark:text-white">Auth</h1>
+<h1 class="text-4xl mb-8 text-center uppercase dark:text-white font-medium">Auth</h1>
 
 <div class="container max-w-md flex flex-col justify-center mx-auto">
     <input

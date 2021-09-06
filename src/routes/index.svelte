@@ -30,15 +30,15 @@
             }
         }, 1500);
     };
-
-
 </script>
 
 <svelte:head>
     <title>Tags.Town</title>
 </svelte:head>
 
-<h1 class="text-4xl text-center my-8 uppercase dark:text-white">Tags.Town</h1>
+<h1 class="text-4xl text-center mb-8 uppercase dark:text-white font-medium">
+    Tags.Town
+</h1>
 
 <input
     class="w-full rounded-md text-lg p-4 border-2 border-gray-200"
@@ -49,12 +49,15 @@
 />
 
 {#if loading || typing}
-    <p class="py-2 text-lg text-gray-400 dark:text-white animate-pulse">loading...</p>
+    <p class="py-2 text-lg text-gray-400 dark:text-white animate-pulse">
+        loading...
+    </p>
 {/if}
 
 {#if !loading && !typing}
-
-        <p in:fade class="py-2 text-lg text-gray-400 dark:text-white">{tags.length} tag{tags.length == 1 ? "" : "s"}</p>
+    <p in:fade class="py-2 text-lg text-gray-400 dark:text-white">
+        {tags.length} tag{tags.length == 1 ? "" : "s"}
+    </p>
 
     <div class="py-4 grid gap-4 md:grid-cols-2 grid-cols-1">
         {#each tags as tag}
