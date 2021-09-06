@@ -40,7 +40,7 @@ enum Key {
 }
 
 export const fetchTags = async (searchTerm: string): Promise<Tag[]> => {
-    const url = `https://tags-api.deno.dev/search/${encodeURIComponent(searchTerm)}`;
+    const url = `https://api.tags.town/search/${encodeURIComponent(searchTerm)}`;
     const res = await fetch(url);
     const data = await res.json();
     // if (data?.tags?.tag?.length) {
