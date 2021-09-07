@@ -67,7 +67,7 @@
     {/if}
     {#if tag.allParts}
     <p class="md:px-6 text-center my-2">Full:</p>
-    <audio class="mx-auto" controls>
+    <audio class="mx-auto" controls preload="none">
         <source src={tag.allParts.url} />
     </audio>
     {/if}
@@ -75,7 +75,7 @@
         <div>
         {#if tag.bass}
         <p class="md:px-6 mt-4 text-center mb-2">Bass:</p>
-        <audio class="mx-auto" controls>
+        <audio class="mx-auto" controls preload="none">
             <source src={tag.bass.url} />
         </audio>
         {/if}
@@ -83,7 +83,7 @@
         <div>
         {#if tag.lead}
         <p class="md:px-6 mt-4 text-center mb-2">Lead:</p>
-        <audio class="mx-auto" controls>
+        <audio class="mx-auto" controls preload="none">
             <source src={tag.lead.url} />
         </audio>
         {/if}
@@ -91,7 +91,7 @@
         <div>
         {#if tag.bari}
         <p class="md:px-6 mt-4 text-center mb-2">Bari:</p>
-        <audio class="mx-auto" controls>
+        <audio class="mx-auto" controls preload="none">
             <source src={tag.bari.url} />
         </audio>
         {/if}
@@ -99,12 +99,47 @@
         <div>
         {#if tag.tenor}
         <p class="md:px-6 mt-4 text-center mb-2">Tenor:</p>
-        <audio class="mx-auto" controls>
+        <audio class="mx-auto" controls preload="none">
             <source src={tag.tenor.url} />
         </audio>
         {/if}
     </div>
     </div>
+    <div class="grid md:grid-cols-2 xl:grid-cols-4">
+        <div>
+        {#if tag.other1}
+        <p class="md:px-6 mt-4 text-center mb-2">Other 1:</p>
+        <audio class="mx-auto" controls preload="none">
+            <source src={tag.bass.url} />
+        </audio>
+        {/if}
+        </div>
+        <div>
+        {#if tag.other2}
+        <p class="md:px-6 mt-4 text-center mb-2">Other 2:</p>
+        <audio class="mx-auto" controls preload="none">
+            <source src={tag.lead.url} />
+        </audio>
+        {/if}
+    </div>
+        <div>
+        {#if tag.other3}
+        <p class="md:px-6 mt-4 text-center mb-2">Other 3:</p>
+        <audio class="mx-auto" controls preload="none">
+            <source src={tag.bari.url} />
+        </audio>
+        {/if}
+    </div>
+        <div>
+        {#if tag.other4}
+        <p class="md:px-6 mt-4 text-center mb-2">Other 4:</p>
+        <audio class="mx-auto" controls preload="none">
+            <source src={tag.tenor.url} />
+        </audio>
+        {/if}
+    </div>
+    </div>
+
 </div>
 
 
