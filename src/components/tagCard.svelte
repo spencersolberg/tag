@@ -9,7 +9,7 @@
   on:click={() => pulsing = true}
 >
 <h4 class="text-xl md:line-clamp-1 font-bold {pulsing ? "animate-pulse" : ""}">{tag.title}</h4>
-<p class="md:line-clamp-1 {pulsing ? "animate-pulse" : ""}">{tag.arranger ?? "Unknown Arranger"}</p>
+<p class="md:line-clamp-1 {pulsing ? "animate-pulse" : ""}">{tag.arranger ?? tag.sungBy ?? tag.quartet ?? tag.teacher ?? tag.provider ?? "Unknown Arranger"}</p>
 <p class="md:line-clamp-1 {pulsing ? "animate-pulse" : ""}">{tag.type}{tag.parts ? " - " + tag.parts + " parts": ""}</p>
 <p class="md:line-clamp-1 {pulsing ? "animate-pulse" : ""}">{tag.key ?? "Unknown Key"} {tag.tonality ?? ""}</p>
 {#if tag.rating}
