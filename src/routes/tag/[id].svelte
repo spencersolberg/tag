@@ -11,6 +11,13 @@
 <script>
     export let tag;
 </script>
+<svelte:head>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@TagsDotTown" />
+    <meta name="twitter:title" content={tag.title} />
+    <meta name="twitter:description" content={"Check out \"" + tag.title + "\" on Tags.Town"} />
+    <!-- <meta name="twitter:image" content="https://html.sammy-codes.com/images/large-profile.jpg" /> -->
+</svelte:head>
 <h1 class="text-4xl text-center mb-2 uppercase dark:text-white font-medium">
     {tag.title}
 </h1>

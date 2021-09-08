@@ -34,6 +34,10 @@
 
 <svelte:head>
     <title>Tags.Town</title>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@TagsDotTown" />
+    <meta name="twitter:title" content="Tags.Town" />
+    <meta name="twitter:description" content="Barbershop Tag Platform" />
 </svelte:head>
 
 <h1 class="text-4xl text-center mb-8 uppercase dark:text-white font-medium">
