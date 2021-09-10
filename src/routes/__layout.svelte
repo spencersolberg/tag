@@ -24,6 +24,9 @@
         body {
             @apply dark:bg-gray-900;
         }
+        html, body {
+            @apply h-full;
+        }
     </style>
 </svelte:head>
 
