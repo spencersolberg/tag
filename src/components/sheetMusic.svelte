@@ -2,12 +2,13 @@
     export let sheetMusic;
     let height;
     let width;
+    let numPages;
     const loaded = async () => {
         const loadingTask = pdfjsLib.getDocument(sheetMusic.url);
         const pdf = await loadingTask.promise;
-        console.log(pdf._pdfInfo.numPages)
+        numPages = pdf._pdfInfo.numPages;
 
-        for(let i=1; i<=pdf._pdfInfo.numPages; i++) {
+        for(let i=1; i<=numPages; i++) {
             const page = await pdf.getPage(i);
             const scale = 1.5;
             const viewport = page.getViewport({scale});
@@ -62,7 +63,7 @@
     <img class="object-contain" src={sheetMusic.url} alt="Sheet music" />
 {:else}
     <!-- <PdfPage src={sheetMusic.url} page="{1}"/> -->
-    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2" id="pages">
+    <div class="grid grid-cols-1 gap-4 {(numPages > 1) ? "xl:grid-cols-2" : ""}" id="pages">
     <!-- <canvas class="rounded-md" id="pdf" /> -->
     </div>
     <!-- <div class="w-full h-full">
