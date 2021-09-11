@@ -38,7 +38,7 @@
   <a class="mx-4 text-lg text-primary-white" href="/auth">Sign Up</a>
   {:else}
   <!-- svelte-ignore a11y-invalid-attribute -->
-  <a class="mx-4 text-lg text-primary-black dark:text-primary-white" on:click={signOut} href="#">Sign Out</a>
+  <a class="mx-4 text-lg text-primary-white" on:click={signOut} href="#">Sign Out</a>
 
   {/if}
 </nav>
