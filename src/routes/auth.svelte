@@ -48,36 +48,36 @@ import { goto } from "$app/navigation";
     <meta name="twitter:title" content="Tags.Town" />
     <meta name="twitter:description" content="Barbershop Tag Platform" />
 </svelte:head>
-<h1 class="text-4xl mb-8 text-center uppercase dark:text-white font-medium">Auth</h1>
+<h1 class="text-4xl mb-8 text-center uppercase text-primary-black dark:text-primary-white font-medium">Auth</h1>
 
 <div class="container max-w-md flex flex-col justify-center mx-auto">
     <input
-        class="w-full rounded-md text-lg border-gray p-4 border-2 border-gray-200 mx-auto my-2"
+        class="w-full rounded-md text-lg border-gray p-4 border-2 border-primary-black mx-auto my-2"
         bind:value={email}
         type="email"
         placeholder="Email Address"
     />
     <input
-        class="w-full rounded-md text-lg border-gray p-4 border-2 border-gray-200 mx-auto my-2"
+        class="w-full rounded-md text-lg border-gray p-4 border-2 border-primary-black mx-auto my-2"
         bind:value={password}
         type="password"
         placeholder="Password"
     />
     <div class="container flex justify-center mx-auto w-full">
         <button
-            class="border-2 p-4 my-2 mx-4 rounded-md bg-gray-900 text-white border-gray-900 hover:bg-white hover:text-black dark:bg-white dark:text-black dark:border-white dark:hover:bg-gray-900 dark:hover:text-white"
+            class="border-2 p-4 my-2 mx-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"
             on:click={signIn}
             >Sign In</button
         >
         <button
-            class="border-2 p-4 my-2 mx-4 rounded-md bg-gray-900 text-white border-gray-900 hover:bg-white hover:text-black dark:bg-white dark:text-black dark:border-white dark:hover:bg-gray-900 dark:hover:text-white"
+            class="border-2 p-4 my-2 mx-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"
             on:click={signUp}>Sign Up</button
         >
     </div>
     {#if confirmationMessage}
         <div
             in:fade
-            class="mt-4 container rounded-md border-2 bg-green-200 border-green-500 text-black"
+            class="mt-4 container rounded-md border-2 bg-green-200 border-green-500 text-primary-black"
         >
             <h4 class=" pt-4 font-bold text-lg text-center">
                 Check your Email!
@@ -90,7 +90,7 @@ import { goto } from "$app/navigation";
     {#if error}
         <div
             in:fade
-            class="mt-4 container rounded-md border-2 bg-red-200 border-red-500 text-black"
+            class="mt-4 container rounded-md border-2 bg-red-200 border-red-500 text-primary-black"
         >
             <h4 class=" pt-4 font-bold text-lg text-center">
                 Uh oh!

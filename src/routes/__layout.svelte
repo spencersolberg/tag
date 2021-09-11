@@ -19,10 +19,10 @@
 </script>
 
 <svelte:head>
-    <meta name="theme-color" content="rgba(17, 24, 39, 1)">
     <style>
         body {
-            @apply dark:bg-gray-900;
+            @apply bg-primary-blue;
+            @apply dark:bg-primary-black;
         }
         html, body {
             @apply h-full;
@@ -30,15 +30,15 @@
     </style>
 </svelte:head>
 
-<nav class="mt-2 flex justify-center w-full">
-  <a class="mx-4 text-lg dark:text-white" href="/">Home</a>
-  <a class="mx-4 text-lg dark:text-white" href="/about">About</a>
+<nav class="pt-2 flex justify-center w-full bg-primary-red">
+  <a class="mx-4 text-lg text-primary-white" href="/">Home</a>
+  <a class="mx-4 text-lg text-primary-white" href="/about">About</a>
   {#if !$session}
-  <a class="mx-4 text-lg dark:text-white" href="/auth">Sign In</a>
-  <a class="mx-4 text-lg dark:text-white" href="/auth">Sign Up</a>
+  <a class="mx-4 text-lg text-primary-white" href="/auth">Sign In</a>
+  <a class="mx-4 text-lg text-primary-white" href="/auth">Sign Up</a>
   {:else}
   <!-- svelte-ignore a11y-invalid-attribute -->
-  <a class="mx-4 text-lg dark:text-white" on:click={signOut} href="#">Sign Out</a>
+  <a class="mx-4 text-lg text-primary-black dark:text-primary-white" on:click={signOut} href="#">Sign Out</a>
 
   {/if}
 </nav>

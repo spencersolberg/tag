@@ -24,15 +24,15 @@
     />
     <!-- <meta name="twitter:image" content="https://html.sammy-codes.com/images/large-profile.jpg" /> -->
 </svelte:head>
-<h1 class="text-4xl text-center mb-2 uppercase dark:text-white font-medium">
+<h1 class="text-4xl text-center mb-2 uppercase text-primary-black dark:text-primary-white font-medium">
     {tag.title}
 </h1>
 {#if tag.version}
-    <h2 class="text-2xl text-center mb-2 dark:text-white">{tag.version}</h2>
+    <h2 class="text-2xl text-center mb-2 text-primary-black dark:text-primary-white">{tag.version}</h2>
 {/if}
 <div class="flex flex-wrap flex-row-reverse justify-between">
     {#if tag.rating}
-        <h2 class="text-center mb-2 dark:text-white">
+        <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
             {#each [...Array(Math.round(tag.rating)).keys()] as star}
                 ⭐️
             {/each}
@@ -40,18 +40,18 @@
         </h2>
     {/if}
     {#if tag.altTitle}
-        <h2 class="text-center mb-2 dark:text-white">({tag.altTitle})</h2>
+        <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">({tag.altTitle})</h2>
     {/if}
 </div>
 <div class="flex flex-wrap flex-row-reverse justify-between">
     {#if tag.key || tag.tonality}
-        <h2 class="text-center mb-2 dark:text-white">
+        <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
             {tag.key ? tag.key : ""}
             {tag.tonality ? tag.tonality : ""}
         </h2>
     {/if}
     {#if tag.parts || tag.type}
-        <h2 class="text-center mb-2 dark:text-white">
+        <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
             {tag.type ? tag.type + (tag.parts ? " - " : "") : ""}{tag.parts
                 ? tag.parts + " parts "
                 : ""}
@@ -60,7 +60,7 @@
 </div>
 
 <div
-    class="p-6 bg-gray-900 text-white dark:bg-white dark:text-black rounded-md shadow-sm hover:shadow-md flex flex-col"
+    class="p-6 bg-primary-red text-primary-white rounded-md shadow-sm hover:shadow-md flex flex-col"
 >
     {#if tag.arranger || tag.sungBy || tag.lyrics}
         <h2 class="text-xl text-center mb-4 uppercase font-medium">Tag Info</h2>

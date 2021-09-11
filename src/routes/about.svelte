@@ -5,4 +5,4 @@
     <meta name="twitter:title" content="Tags.Town" />
     <meta name="twitter:description" content="Barbershop Tag Platform" />
 </svelte:head>
-<h1 class="text-4xl mb-8 text-center uppercase dark:text-white font-medium">About</h1>
+<h1 class="text-4xl mb-8 text-center uppercase text-primary-black dark:text-primary-white font-medium">About</h1>

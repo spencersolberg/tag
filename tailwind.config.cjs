@@ -5,7 +5,15 @@ const config = {
 		"./src/**/*.{html,js,svelte,ts}",
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				"primary-blue": "#93E3FE",
+				"secondary-blue": "AFEAFF",
+				"primary-black": "#111111",
+				"primary-red": "#E41556",
+				"primary-white": "#F2F2F2"
+			}
+		},
 	},
 	plugins: [
 		require("@tailwindcss/line-clamp"),
