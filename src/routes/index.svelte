@@ -9,10 +9,10 @@
 
     const updateSearchTerm = () => {
         let currentSearchTerm = String(searchTerm);
-        console.log(searchTerm);
+        // console.log(searchTerm);
         typing = true;
         setTimeout(() => {
-            console.log(`Is ${currentSearchTerm} == ${searchTerm}`);
+            // console.log(`Is ${currentSearchTerm} == ${searchTerm}`);
             if (currentSearchTerm == searchTerm) {
                 typing = false;
                 if (searchTerm != "") {
