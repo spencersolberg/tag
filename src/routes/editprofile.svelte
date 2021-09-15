@@ -10,7 +10,7 @@
             return { props: { profile: data[0] } };
         } else {
             if (browser) goto("/auth");
-            return;
+            return { props: { profile: null } };
         }
     }
 </script>
@@ -65,6 +65,7 @@
 >
     Edit Profile
 </h1>
+{#if browser}
 <div class="container max-w-md flex flex-col justify-center mx-auto">
     <div class={displayForm ? "" : "hidden"}>
         <input
@@ -96,7 +97,7 @@
         <div class="container flex justify-center mx-auto w-full">
             <button
                 class="border-2 p-4 my-2 mx-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"
-                on:click={editProfile}>Edit Profile</button
+                on:click={editProfile}>Confirm Changes</button
             >
         </div>
     </div>
@@ -119,3 +120,4 @@
         </SuccessCard>
     {/if}
 </div>
+{/if}
