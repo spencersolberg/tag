@@ -11,8 +11,26 @@
     let displayName;
     let displayForm = true;
     let error;
+    let newAvatar;
+    let newAvatarURL;
+    let noAvatar = true;
     let success = false;
+    let fileValue;
+
     if (browser && !$session) goto("/auth");
+
+    const uploadAvatar = async () => {
+        if (!noAvatar && newAvatar) {
+            const url = "https://api.tags.town/avatar";
+            const res = await fetch(url, {
+                method: "POST",
+                body: newAvatar,
+            });
+            const data = await res.json();
+            return data;
+        }
+        return null;
+    };
 
     if ($session && browser) {
         const profileRequest = supabase
@@ -44,13 +62,23 @@
             error = { message: "This username is already taken" };
             return;
         } else {
+            const avatarUpload = await uploadAvatar();
+
+            if (avatarUpload?.error) {
+                error = avatarUpload.error;
+                return;
+            }
+
             const { data: data2, error: err2 } = await supabase
                 .from("profiles")
                 .insert({
                     user_id: supabase.auth.user().id,
                     username,
-                    bio,
-                    display_name: displayName,
+                    bio: bio == "" ? null : bio,
+                    display_name: displayName == "" ? null : displayName,
+                    avatar: noAvatar
+                        ? null
+                        : avatarUpload?.file ?? profile.avatar,
                 });
             if (err2) {
                 error = err2;
@@ -61,6 +89,16 @@
             setTimeout(() => window.location.assign("/"), 1500);
         }
     };
+    const onFileSelected = (e) => {
+        let image = e.target.files[0];
+        newAvatar = image;
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = (e) => {
+            newAvatarURL = e.target.result;
+            noAvatar = false;
+        };
+    };
 </script>
 
 <h1
@@ -70,6 +108,34 @@
 </h1>
 <div class="container max-w-md flex flex-col justify-center mx-auto">
     <div class={displayForm ? "" : "hidden"}>
+        {#if noAvatar}
+            <p class="text-xl text-primary-black dark:text-primary-white">
+                No avatar
+            </p>
+        {:else}
+            <img
+                src={newAvatarURL}
+                alt=""
+                class="rounded-md h-40 w-40 object-cover mx-auto my-2 border-2 border-primary-black"
+            />
+        {/if}
+        <div class="mx-auto text-primary-black dark:text-primary-white">
+            <input
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                on:change={(e) => onFileSelected(e)}
+                bind:value={fileValue}
+            />
+        </div>
+        <div class="container flex justify-center mx-auto w-full">
+            <button
+                class="border-2 p-2 my-2 mx-4 rounded-md bg-primary-red text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-red dark:text-primary-white dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"
+                on:click={() => {
+                    noAvatar = true;
+                    fileValue = null;
+                }}>Delete Avatar</button
+            >
+        </div>
         <input
             class="w-full rounded-md text-lg border-gray p-4 border-2 border-primary-black mx-auto my-2"
             bind:value={username}
@@ -113,12 +179,8 @@
     {/if}
     {#if success}
         <SuccessCard>
-            <h4 class=" pt-4 font-bold text-lg text-center">
-                Hip hip hooray!
-            </h4>
-            <p class="p-4 text-center">
-                Your profile has been created!
-            </p>
+            <h4 class=" pt-4 font-bold text-lg text-center">Hip hip hooray!</h4>
+            <p class="p-4 text-center">Your profile has been created!</p>
         </SuccessCard>
     {/if}
 </div>

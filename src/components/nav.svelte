@@ -29,9 +29,9 @@
         <a class="mx-4 text-lg text-primary-white" href="/auth">Sign Up</a>
     {:else}
         {#if profile}
-            <a href={`/@${profile.username}`} class="mx-4 text-lg text-primary-white">@{profile.username}</a>
+            <a href={`/@${profile.username}`} class="mx-4 text-lg text-primary-white">Profile</a>
         {:else}
-            <a href="/createprofile" class="mx-4 text-lg text-primary-white">Create Profile</a>
+            <a href="/createprofile" class="mx-4 text-lg text-primary-white">Profile</a>
         {/if}
         <!-- svelte-ignore a11y-invalid-attribute -->
         <a class="mx-4 text-lg text-primary-white" on:click={signOut} href="#"
