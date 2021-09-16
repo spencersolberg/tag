@@ -39,7 +39,7 @@
             const url = "https://api.tags.town/avatar";
             const res = await fetch(url, {
                 method: "POST",
-                body: newAvatar
+                body: newAvatar,
             });
             const data = await res.json();
             return data;
@@ -53,6 +53,10 @@
             error = { message: "You need to provide a username." };
             return;
         }
+        if (!profile.part) {
+            error ={ message: "You need to choose a voice part."};
+            return;
+        }
         const { data, error: err } = await supabase
             .from("profiles")
             .select()
@@ -63,7 +67,6 @@
             error = { message: "This username is already taken" };
             return;
         } else {
-
             const avatarUpload = await uploadAvatar();
 
             if (avatarUpload?.error) {
@@ -75,12 +78,15 @@
                 .from("profiles")
                 .update({
                     username: profile.username,
-                    display_name: profile.display_name == "" ? null : profile.display_name,
+                    display_name:
+                        profile.display_name == ""
+                            ? null
+                            : profile.display_name,
                     bio: profile.bio == "" ? null : profile.bio,
                     avatar: noAvatar
                         ? null
-                        : avatarUpload?.file ??
-                          profile.avatar,
+                        : avatarUpload?.file ?? profile.avatar,
+                    part: profile.part
                 })
                 .eq("user_id", supabase.auth.user().id);
             if (err2) {
@@ -177,6 +183,16 @@
                 class="w-full rounded-md text-lg border-gray p-4 border-2 border-primary-black mx-auto my-2"
                 maxlength="256"
             />
+            <p class="text-xl text-primary-black dark:text-primary-white">
+                Choose your voice part
+            </p>
+            <select class="mx-auto" name="Voice Part" bind:value={profile.part}>
+                <option value="Bass">Bass</option>
+                <option value="Baritone">Baritone</option>
+                <option value="Lead">Lead</option>
+                <option value="Tenor">Tenor</option>
+                <option value="Other">Other</option>
+            </select>
             <div class="container flex justify-center mx-auto w-full">
                 <button
                     class="border-2 p-4 my-2 mx-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"

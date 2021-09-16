@@ -12,6 +12,7 @@
 <script>
     import SheetMusic from "../../components/sheetMusic.svelte";
     export let tag;
+    import { fade } from "svelte/transition";
 </script>
 
 <svelte:head>
@@ -24,13 +25,13 @@
     />
     <!-- <meta name="twitter:image" content="https://html.sammy-codes.com/images/large-profile.jpg" /> -->
 </svelte:head>
-<h1 class="text-4xl text-center mb-2 uppercase text-primary-black dark:text-primary-white font-medium">
+<h1 in:fade class="text-4xl text-center mb-2 uppercase text-primary-black dark:text-primary-white font-medium">
     {tag.title}
 </h1>
 {#if tag.version}
-    <h2 class="text-2xl text-center mb-2 text-primary-black dark:text-primary-white">{tag.version}</h2>
+    <h2 in:fade class="text-2xl text-center mb-2 text-primary-black dark:text-primary-white">{tag.version}</h2>
 {/if}
-<div class="flex flex-wrap flex-row-reverse justify-between">
+<div in:fade class="flex flex-wrap flex-row-reverse justify-between">
     {#if tag.rating}
         <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
             {#each [...Array(Math.round(tag.rating)).keys()] as star}
@@ -43,7 +44,7 @@
         <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">({tag.altTitle})</h2>
     {/if}
 </div>
-<div class="flex flex-wrap flex-row-reverse justify-between">
+<div in:fade class="flex flex-wrap flex-row-reverse justify-between">
     {#if tag.key || tag.tonality}
         <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
             {tag.key ? tag.key : ""}
@@ -60,6 +61,7 @@
 </div>
 
 <div
+    in:fade
     class="p-6 bg-primary-red text-primary-white rounded-md shadow-sm hover:shadow-md flex flex-col"
 >
     {#if tag.arranger || tag.sungBy || tag.lyrics}

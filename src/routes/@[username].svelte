@@ -5,7 +5,11 @@
             .from("profiles")
             .select()
             .eq("username", page.params.username);
-        return { props: { profile: data[0] } };
+        const { data: data2, error: error2 } = await supabase
+            .from("premiums")
+            .select()
+            .eq("user_id", data[0].user_id);
+        return { props: { profile: data[0], premium: data2[0] } };
     }
 </script>
 
@@ -19,6 +23,7 @@
     import Auth from "./auth.svelte";
 
     export let profile;
+    export let premium;
     let pfp = true;
 
     if (!$session) goto("/auth");
@@ -71,24 +76,42 @@
             </h1>
         {/if}
     </div>
-    {#if profile?.bio}
+    {#if profile?.bio || premium?.twitter}
         <div
             class="p-6 my-4 bg-primary-red text-primary-white rounded-md shadow-sm hover:shadow-md flex text-xl flex-col"
             in:fade
         >
-            <h2 class="text-xl text-center mb-4 uppercase font-medium">
-                About Me
-            </h2>
-            <p class="md:px-6">{profile?.bio}</p>
+            {#if profile.bio}
+                <h2 class="text-xl text-center mb-4 uppercase font-medium">
+                    About Me
+                </h2>
+                <p class="md:px-6">
+                    Voice part: <strong>{profile.part}</strong>
+                </p>
+                <br>
+                <p class="md:px-6">{profile?.bio}</p>
+            {/if}
+            {#if premium?.twitter}
+            {#if profile.bio}
+                <hr class="mt-4">
+            {/if}
+                <h2 class="text-xl text-center mb-4 {profile.bio ? "mt-4 " : ""}uppercase font-medium">
+                    Links
+                </h2>
+                {#if premium.twitter}
+                <div class="cursor-pointer rounded-md p-2 mx-auto bg-blue-400 text-primary-white hover:bg-primary-white hover:text-primary-black  "><a class="text-center" href={"https://twitter.com/" + premium.twitter}><strong>Twitter</strong> (@{premium.twitter})</a></div>
+                {/if}
+            {/if}
         </div>
     {/if}
 
     {#if profile?.user_id == supabase.auth.user()?.id}
         <a href="/editprofile" in:fade>
             <div
-                class="border-2 p-4 my-2 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white text-center"
-                >Edit profile ✏️</div
-            ></a
+                class="border-2 p-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white text-center"
+            >
+                Edit profile ✏️
+            </div></a
         >
     {/if}
 </div>

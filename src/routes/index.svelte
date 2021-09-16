@@ -47,7 +47,7 @@
 </h1>
 </div> -->
 
-<div class="flex justify-center">
+<div class="flex justify-center" in:fade>
     <img src="/logoTitleWhite.svg" alt="Tags.TOwn" class="hidden dark:block h-20 mb-4">
     <img src="/logoTitle.svg" alt="Tags.Town" class=" dark:hidden h-20 mb-4">
 </div>
@@ -58,6 +58,7 @@
     bind:value={searchTerm}
     on:input={updateSearchTerm}
     placeholder="Search tags"
+    in:fade
 />
 
 {#if loading || typing}

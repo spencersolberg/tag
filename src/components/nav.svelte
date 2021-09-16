@@ -15,7 +15,7 @@
         profileRequest.then(({data, error}) => {
             if (error) console.error(error);
             // console.log(data);
-            console.log(supabase.auth.user().id);
+            // console.log(supabase.auth.user().id);
             profile = data[0];
         })
     }

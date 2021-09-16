@@ -9,6 +9,7 @@
     let username;
     let bio;
     let displayName;
+    let part;
     let displayForm = true;
     let error;
     let newAvatar;
@@ -52,6 +53,10 @@
             error = { message: "You need to provide a username." };
             return;
         }
+        if (!part) { 
+            error = { message: "You need to choose a voice part." };
+            return;
+        }
         const { data, error: err } = await supabase
             .from("profiles")
             .select()
@@ -74,6 +79,7 @@
                 .insert({
                     user_id: supabase.auth.user().id,
                     username,
+                    part,
                     bio: bio == "" ? null : bio,
                     display_name: displayName == "" ? null : displayName,
                     avatar: noAvatar
@@ -162,6 +168,16 @@
             class="w-full rounded-md text-lg border-gray p-4 border-2 border-primary-black mx-auto my-2"
             maxlength="256"
         />
+        <p class="text-xl text-primary-black dark:text-primary-white">
+            Choose your voice part
+        </p>
+        <select class="mx-auto" name="Voice Part" bind:value={part}>
+            <option value="Bass">Bass</option>
+            <option value="Baritone">Baritone</option>
+            <option value="Lead">Lead</option>
+            <option value="Tenor">Tenor</option>
+            <option value="Other">Other</option>
+        </select>
         <div class="container flex justify-center mx-auto w-full">
             <button
                 class="border-2 p-4 my-2 mx-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"
