@@ -2,7 +2,11 @@
     import TagCard from "../components/tagCard.svelte";
     import { fetchTags } from "../fetchTags";
     import { fade } from "svelte/transition";
-    let searchTerm = "";
+    import { page } from "$app/stores";
+    import { goto } from "$app/navigation";
+
+    const q = $page.query.get("q") || "";
+    let searchTerm = q;
     let typing = false;
     let loading = false;
     let tags = [];
@@ -20,6 +24,14 @@
                     fetchTags(searchTerm)
                         .then((t) => {
                             loading = false;
+                            goto(
+                                searchTerm
+                                    ? "/?q=" + encodeURIComponent(searchTerm)
+                                    : "/",
+                                true,
+                                true,
+                                true
+                            );
                             tags = t;
                         })
                         .catch((err) => {
@@ -30,6 +42,7 @@
             }
         }, 1500);
     };
+    if (q) updateSearchTerm();
 </script>
 
 <svelte:head>
@@ -48,8 +61,12 @@
 </div> -->
 
 <div class="flex justify-center" in:fade>
-    <img src="/logoTitleWhite.svg" alt="Tags.TOwn" class="hidden dark:block h-20 mb-4">
-    <img src="/logoTitle.svg" alt="Tags.Town" class=" dark:hidden h-20 mb-4">
+    <img
+        src="/logoTitleWhite.svg"
+        alt="Tags.TOwn"
+        class="hidden dark:block h-20 mb-4"
+    />
+    <img src="/logoTitle.svg" alt="Tags.Town" class=" dark:hidden h-20 mb-4" />
 </div>
 
 <input
@@ -62,7 +79,9 @@
 />
 
 {#if loading || typing}
-    <p class="py-2 text-lg text-primary-black dark:text-primary-white animate-pulse">
+    <p
+        class="py-2 text-lg text-primary-black dark:text-primary-white animate-pulse"
+    >
         loading...
     </p>
 {/if}
