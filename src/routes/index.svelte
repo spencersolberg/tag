@@ -49,7 +49,7 @@
         }, 1500);
     };
     page.subscribe(({ query }) => {
-        if (first) {
+        if ( query.get("q") && first) {
             q = query.get("q");
             first = false;
             if(q) updateSearchTerm();
