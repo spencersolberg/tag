@@ -7,29 +7,28 @@
     import { browser } from "$app/env";
 
     let q = $page.query.get("q") || "";
-    let searchTerm = q;
     let typing = false;
     let loading = false;
     let tags = [];
 
     const updateSearchTerm = () => {
-        let currentSearchTerm = String(searchTerm);
-        // console.log(searchTerm);
+        let currentSearchTerm = String(q);
+        // console.log(q);
         typing = true;
         setTimeout(() => {
-            // console.log(`Is ${currentSearchTerm} == ${searchTerm}`);
-            if (currentSearchTerm == searchTerm) {
+            // console.log(`Is ${currentSearchTerm} == ${q}`);
+            if (currentSearchTerm == q) {
                 typing = false;
-                if (searchTerm != "") {
+                if (q != "") {
                     loading = true;
-                    fetchTags(searchTerm)
+                    fetchTags(q)
                         .then((t) => {
                             loading = false;
                             if (browser) {
                                 goto(
-                                    searchTerm
+                                    q
                                         ? "/?q=" +
-                                              encodeURIComponent(searchTerm)
+                                              encodeURIComponent(q)
                                         : "/",
                                     true,
                                     true,
@@ -77,13 +76,13 @@
 <input
     class="w-full rounded-md text-lg text-primary-black p-4 border-2 border-primary-black"
     type="text"
-    bind:value={searchTerm}
+    bind:value={q}
     on:input={updateSearchTerm}
     placeholder="Search tags"
     in:fade
 />
 <p class="hidden text-lg text-primary-black dark:text-primary-white">
-    {searchTerm}
+    {q}
 </p>
 {#if loading || typing}
     <p
