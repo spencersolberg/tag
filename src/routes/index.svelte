@@ -4,6 +4,7 @@
     import { fade } from "svelte/transition";
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
+    import { browser } from "$app/env";
 
     const q = $page.query.get("q") || "";
     let searchTerm = q;
@@ -24,14 +25,18 @@
                     fetchTags(searchTerm)
                         .then((t) => {
                             loading = false;
-                            goto(
-                                searchTerm
-                                    ? "/?q=" + encodeURIComponent(searchTerm)
-                                    : "/",
-                                true,
-                                true,
-                                true
-                            );
+                            if (browser) {
+                                goto(
+                                    searchTerm
+                                        ? "/?q=" +
+                                              encodeURIComponent(searchTerm)
+                                        : "/",
+                                    true,
+                                    true,
+                                    true
+                                );
+                            }
+
                             tags = t;
                         })
                         .catch((err) => {
@@ -63,7 +68,7 @@
 <div class="flex justify-center" in:fade>
     <img
         src="/logoTitleWhite.svg"
-        alt="Tags.TOwn"
+        alt="Tags.Twn"
         class="hidden dark:block h-20 mb-4"
     />
     <img src="/logoTitle.svg" alt="Tags.Town" class=" dark:hidden h-20 mb-4" />
@@ -77,7 +82,9 @@
     placeholder="Search tags"
     in:fade
 />
-
+<p class="hidden text-lg text-primary-black dark:text-primary-white">
+    {$page.query.toString()}
+</p>
 {#if loading || typing}
     <p
         class="py-2 text-lg text-primary-black dark:text-primary-white animate-pulse"
