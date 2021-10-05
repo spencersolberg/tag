@@ -6,7 +6,7 @@
     import { goto } from "$app/navigation";
     import { browser } from "$app/env";
 
-    const q = $page.query.get("q") || "";
+    let q = $page.query.get("q") || "";
     let searchTerm = q;
     let typing = false;
     let loading = false;
@@ -83,7 +83,7 @@
     in:fade
 />
 <p class="hidden text-lg text-primary-black dark:text-primary-white">
-    {$page.query.get("q")}
+    {searchTerm}
 </p>
 {#if loading || typing}
     <p
