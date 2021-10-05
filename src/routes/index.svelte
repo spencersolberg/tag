@@ -7,8 +7,8 @@
     import { browser } from "$app/env";
 
     let q = $page.query.get("q") ?? "";
-    console.log(q);
-    setTimeout(() => console.log(q), 5000)
+    console.log($page.query.get("q"));
+    setTimeout(() => console.log($page.query.get("q")), 5000)
     let typing = false;
     let loading = false;
     let tags = [];
