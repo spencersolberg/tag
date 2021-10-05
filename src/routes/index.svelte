@@ -14,6 +14,7 @@
     let typing = false;
     let loading = false;
     let tags = [];
+    let first = true;
 
     const updateSearchTerm = () => {
         let currentSearchTerm = String(q);
@@ -47,11 +48,13 @@
             }
         }, 1500);
     };
-    onMount(() => {
-        console.log("mounted");
-        q = $page.query.get("q") ?? "";
-        if (q) updateSearchTerm();
-    })
+    page.subscribe(({ query }) => {
+        if (first) {
+            q = query.get("q");
+            first = false;
+            updateSearchTerm();
+        }
+    });
 </script>
 
 <svelte:head>
@@ -88,7 +91,7 @@
 />
 <p class="hidden text-lg text-primary-black dark:text-primary-white">
     PQG: {$page.query.get("q")}
-    Q:   {q}
+    Q: {q}
 </p>
 {#if loading || typing}
     <p
