@@ -21,10 +21,24 @@
     import { browser } from "$app/env";
     // import supabase from "$lib/db";
     import Auth from "./auth.svelte";
+    import TagCard from "../components/tagCard.svelte";
+    import PlaceholderTagCard from "../components/placeholderTagCard.svelte";
 
     export let profile;
     export let premium;
     let pfp = true;
+    let favorites;
+    const getFavorites = async () => {
+        console.log("Getting favorites");
+        if (!profile.favorites) {
+            return null;
+        }
+        const url = "https://api.tags.town/tags/";
+        const res = await fetch(url + profile.favorites.join(","));
+        const data = await res.json();
+        console.log(data);
+        return data;
+    };
 
     if (!$session) goto("/auth");
 
@@ -40,6 +54,9 @@
     //             bio = data[0].bio;
     //         });
     // }
+
+    favorites = null;
+    getFavorites().then((favs) => favorites = favs)
 </script>
 
 <div class="flex flex-col ">
@@ -88,18 +105,62 @@
                 <p class="md:px-6">
                     Voice part: <strong>{profile.part}</strong>
                 </p>
-                <br>
+                <br />
                 <p class="md:px-6">{profile?.bio}</p>
             {/if}
-            {#if premium?.twitter}
-            {#if profile.bio}
-                <hr class="mt-4">
+            {#if profile.favorites}
+                <div in:fade>
+                    {#if profile.bio}
+                        <hr class="mt-4" />
+                    {/if}
+                    <h2
+                        class="text-xl text-center mb-4 {profile.bio
+                            ? 'mt-4 '
+                            : ''}uppercase font-medium"
+                    >
+                        Favorite Tags
+                    </h2>
+                    <div
+                        class="py-4 grid gap-y-4 gap-x-5 md:grid-cols-2 grid-cols-1"
+                    >
+                    {#if favorites}
+                        {#each favorites as tag}
+                            <div in:fade>
+                                <TagCard {tag} bg="bg-primary-black" />
+                            </div>
+                        {/each}
+                    {:else}
+                            {#each Array.from(Array(profile.favorites.length).keys()) as placeholder}
+                                <div in:fade>
+                                    <PlaceholderTagCard bg="bg-primary-black" />
+                                </div>
+                            {/each}
+                    {/if}
+                    </div>
+                </div>
             {/if}
-                <h2 class="text-xl text-center mb-4 {profile.bio ? "mt-4 " : ""}uppercase font-medium">
+            {#if premium?.twitter}
+                {#if profile.bio || profile.favorites}
+                    <hr class="mt-4" />
+                {/if}
+                <h2
+                    class="text-xl text-center mb-4 {profile.bio ||
+                    profile.favorites
+                        ? 'mt-4 '
+                        : ''}uppercase font-medium"
+                >
                     Links
                 </h2>
                 {#if premium.twitter}
-                <div class="cursor-pointer rounded-md p-2 mx-auto bg-blue-400 text-primary-white hover:bg-primary-white hover:text-primary-black  "><a class="text-center" href={"https://twitter.com/" + premium.twitter}><strong>Twitter</strong> (@{premium.twitter})</a></div>
+                    <div
+                        class="cursor-pointer rounded-md p-2 mx-auto bg-blue-400 text-primary-white hover:bg-primary-white hover:text-primary-black  "
+                    >
+                        <a
+                            class="text-center"
+                            href={"https://twitter.com/" + premium.twitter}
+                            ><strong>Twitter</strong> (@{premium.twitter})</a
+                        >
+                    </div>
                 {/if}
             {/if}
         </div>
