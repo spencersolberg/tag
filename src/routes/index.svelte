@@ -83,7 +83,7 @@
     in:fade
 />
 <p class="hidden text-lg text-primary-black dark:text-primary-white">
-    {$page.query.toString()}
+    {$page.query.get("q")}
 </p>
 {#if loading || typing}
     <p
