@@ -7,6 +7,8 @@
     import { browser } from "$app/env";
 
     let q = $page.query.get("q") ?? "";
+    console.log(q);
+    setTimeout(() => console.log(q), 5000)
     let typing = false;
     let loading = false;
     let tags = [];
@@ -79,8 +81,8 @@
     in:fade
 />
 <p class="hidden text-lg text-primary-black dark:text-primary-white">
-    {$page.query.get("q")}
-    {q}
+    PQG: {$page.query.get("q")}
+    Q:   {q}
 </p>
 {#if loading || typing}
     <p
