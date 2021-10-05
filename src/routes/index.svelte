@@ -52,7 +52,7 @@
         if (first) {
             q = query.get("q");
             first = false;
-            updateSearchTerm();
+            if(q) updateSearchTerm();
         }
     });
 </script>
