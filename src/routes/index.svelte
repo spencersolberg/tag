@@ -5,10 +5,12 @@
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
     import { browser } from "$app/env";
+    import { onMount } from "svelte";
 
-    let q = $page.query.get("q") ?? "";
-    console.log($page.query.get("q"));
-    setTimeout(() => console.log($page.query.get("q")), 5000)
+    let q = "";
+    // let q = $page.query.get("q") ?? "";
+    // console.log($page.query.get("q"));
+    // setTimeout(() => console.log($page.query.get("q")), 5000)
     let typing = false;
     let loading = false;
     let tags = [];
@@ -45,7 +47,11 @@
             }
         }, 1500);
     };
-    if (q) updateSearchTerm();
+    onMount(() => {
+        console.log("mounted");
+        q = $page.query.get("q") ?? "";
+        if (q) updateSearchTerm();
+    })
 </script>
 
 <svelte:head>
