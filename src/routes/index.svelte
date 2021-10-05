@@ -6,7 +6,7 @@
     import { goto } from "$app/navigation";
     import { browser } from "$app/env";
 
-    let q = $page.query.get("q") || "";
+    let q = $page.query.get("q") ?? "";
     let typing = false;
     let loading = false;
     let tags = [];
@@ -26,10 +26,7 @@
                             loading = false;
                             if (browser) {
                                 goto(
-                                    q
-                                        ? "/?q=" +
-                                              encodeURIComponent(q)
-                                        : "/",
+                                    q ? "/?q=" + encodeURIComponent(q) : "/",
                                     true,
                                     true,
                                     true
@@ -82,6 +79,7 @@
     in:fade
 />
 <p class="hidden text-lg text-primary-black dark:text-primary-white">
+    {$page.query.get("q")}
     {q}
 </p>
 {#if loading || typing}
