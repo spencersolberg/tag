@@ -62,7 +62,7 @@
 
 <div
     in:fade
-    class="p-6 bg-primary-red text-primary-white rounded-md shadow-sm hover:shadow-md flex flex-col"
+    class="p-6 bg-primary-red text-primary-white border-2 border-primary-black dark:border-primary-red rounded-md shadow-sm hover:shadow-md flex flex-col"
 >
     {#if tag.arranger || tag.sungBy || tag.lyrics}
         <h2 class="text-xl text-center mb-4 uppercase font-medium">Tag Info</h2>

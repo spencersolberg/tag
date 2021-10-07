@@ -28,8 +28,7 @@
     export let premium;
     let pfp = true;
     let favorites;
-    const getFavorites = async () => {
-        console.log("Getting favorites");
+    const retrieveFavorites = async () => {
         if (!profile.favorites) {
             return null;
         }
@@ -38,6 +37,22 @@
         const data = await res.json();
         console.log(data);
         return data;
+    };
+
+    const getFavorites = async () => {
+        if (!profile.favorites) {
+            return null;
+        }
+        const { data, error } = await supabase
+            .from("tags_cache")
+            .select()
+            .in("id", profile.favorites);
+        if (error) console.error(error);
+        const cached = data.map(t => t.json);
+        if (cached.length < profile.favorites.length) {
+            return await retrieveFavorites();
+        }
+        return data.map(t => t.json);
     };
 
     if (!$session) goto("/auth");
@@ -56,7 +71,7 @@
     // }
 
     favorites = null;
-    getFavorites().then((favs) => favorites = favs)
+    getFavorites().then((favs) => (favorites = favs));
 </script>
 
 <div class="flex flex-col ">
@@ -65,7 +80,7 @@
             <img
                 src={"https://file.coffee/u/" + profile.avatar}
                 alt
-                class="rounded-md h-40 w-40 object-cover mr-6"
+                class="rounded-md h-40 w-40 object-cover mr-6 border-2 border-primary-black"
                 in:fade
             />
         {/if}
@@ -95,7 +110,7 @@
     </div>
     {#if profile?.bio || premium?.twitter}
         <div
-            class="p-6 my-4 bg-primary-red text-primary-white rounded-md shadow-sm hover:shadow-md flex text-xl flex-col"
+            class="p-6 my-4 bg-primary-red text-primary-white border-2 border-primary-black dark:border-primary-red rounded-md shadow-sm hover:shadow-md flex text-xl flex-col"
             in:fade
         >
             {#if profile.bio}
@@ -123,19 +138,19 @@
                     <div
                         class="py-4 grid gap-y-4 gap-x-5 md:grid-cols-2 grid-cols-1"
                     >
-                    {#if favorites}
-                        {#each favorites as tag}
-                            <div in:fade>
-                                <TagCard {tag} bg="bg-primary-black" />
-                            </div>
-                        {/each}
-                    {:else}
+                        {#if favorites}
+                            {#each favorites as tag}
+                                <div in:fade>
+                                    <TagCard {tag} bg="bg-primary-black" />
+                                </div>
+                            {/each}
+                        {:else}
                             {#each Array.from(Array(profile.favorites.length).keys()) as placeholder}
                                 <div in:fade>
                                     <PlaceholderTagCard bg="bg-primary-black" />
                                 </div>
                             {/each}
-                    {/if}
+                        {/if}
                     </div>
                 </div>
             {/if}
@@ -153,7 +168,7 @@
                 </h2>
                 {#if premium.twitter}
                     <div
-                        class="cursor-pointer rounded-md p-2 mx-auto bg-blue-400 text-primary-white hover:bg-primary-white hover:text-primary-black  "
+                        class="cursor-pointer rounded-md p-2 mx-auto border-2 border-primary-black bg-blue-400 text-primary-white hover:bg-primary-white hover:text-primary-black  "
                     >
                         <a
                             class="text-center"

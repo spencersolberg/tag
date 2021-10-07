@@ -6,7 +6,7 @@
 
 <a
     href="/tag/{tag.id}"
-    class="p-6 {bg ?? "bg-primary-red"} text-primary-white text-center rounded-md shadow-sm hover:shadow-md flex flex-col items-center transition-transform transform transform-gpu {!pulsing
+    class="p-6 {bg ?? "bg-primary-red"} border-2 border-primary-black dark:border-primary-red text-primary-white text-center rounded-md shadow-sm hover:shadow-md flex flex-col items-center transition-transform transform transform-gpu {!pulsing
         ? 'motion-safe:hover:scale-105'
         : 'scale-95'}"
     on:click={() => (pulsing = true)}
