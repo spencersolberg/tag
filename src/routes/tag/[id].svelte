@@ -1,21 +1,70 @@
 <script context="module">
+    import supabase from "$lib/db";
     export async function load({ page }) {
         const id = page.params.id;
         const url = `https://api.tags.town/tag/${id}`;
         // const url = `https://tags-api.deno.dev/tag${id}`;
         const res = await fetch(url);
         const tag = await res.json();
-        return { props: { tag } };
+
+        if (supabase.auth?.user()) {
+            const { data, error } = await supabase
+                .from("profiles")
+                .select()
+                .eq("user_id", supabase.auth.user().id);
+            return { props: { tag, profile: data[0] } };
+        } else {
+            // if (browser) goto("/auth");
+            return { props: { tag, profile: null } };
+        }
     }
 </script>
 
 <script>
     import SheetMusic from "../../components/sheetMusic.svelte";
     export let tag;
+    export let profile;
     import { fade } from "svelte/transition";
+    let favorited = profile?.favorites?.includes(tag.id);
+
+    const addToFavorites = async () => {
+        const { data, error } = await supabase
+            .from("profiles")
+            .update({
+                favorites: [...profile.favorites, tag.id],
+            })
+            .eq("user_id", supabase.auth.user().id);
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+        party.confetti(document.querySelector("#favorite-button"));
+        favorited = true;
+        return;
+    };
+
+    const removeFromFavorites = async () => {
+        const { data, error } = await supabase
+            .from("profiles")
+            .update({
+                favorites: profile.favorites.filter(
+                    (favorite) => favorite != tag.id
+                ),
+            })
+            .eq("user_id", supabase.auth.user().id);
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+        favorited = false;
+        return;
+    };
 </script>
 
 <svelte:head>
+    <title>Tags.Town - {tag.title}</title>
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@TagsDotTown" />
     <meta name="twitter:title" content={tag.title} />
@@ -23,14 +72,68 @@
         name="twitter:description"
         content={'Check out "' + tag.title + '" on Tags.Town'}
     />
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
     <!-- <meta name="twitter:image" content="https://html.sammy-codes.com/images/large-profile.jpg" /> -->
 </svelte:head>
-<h1 in:fade class="text-4xl text-center mb-2 uppercase text-primary-black dark:text-primary-white font-medium">
-    {tag.title}
-</h1>
-{#if tag.version}
-    <h2 in:fade class="text-2xl text-center mb-2 text-primary-black dark:text-primary-white">{tag.version}</h2>
-{/if}
+<div class="flex flex-col lg:flex-row lg:justify-between mb-2">
+    <div>
+        <h1
+            in:fade
+            class="text-4xl uppercase text-center lg:text-left text-primary-black dark:text-primary-white font-medium"
+        >
+            {tag.title}
+        </h1>
+        {#if tag.version}
+            <h2
+                in:fade
+                class="text-xl text-center lg:text-left mb-2 text-primary-black dark:text-primary-white"
+            >
+                {tag.version}
+            </h2>
+        {/if}
+    </div>
+    <div class="flex justify-center lg:justify-around flex-row">
+        <button
+            id="favorite-button"
+            on:click={favorited ? removeFromFavorites : addToFavorites}
+            class="transition-transform transform transform-gpu motion-safe:hover:scale-110"
+        >
+            {#if !favorited}
+                <svg
+                    class="w-12 h-12 text-primary-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    /></svg
+                >
+            {:else if favorited}
+                <svg
+                    class="w-12 h-12 text-primary-red"
+                    fill="currentColor"
+                    stroke="white"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    onmousedown="party.confetti(this)"
+                    ><path
+                        fill-rule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clip-rule="evenodd"
+                    /></svg
+                >
+            {/if}
+        </button>
+        <!-- <button on:click={favorited ? removeFromFavorites : addToFavorites}
+            >{favorited ? "-" : "+"}
+        </button> -->
+    </div>
+</div>
+
 <div in:fade class="flex flex-wrap flex-row-reverse justify-between">
     {#if tag.rating}
         <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
@@ -41,7 +144,9 @@
         </h2>
     {/if}
     {#if tag.altTitle}
-        <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">({tag.altTitle})</h2>
+        <h2 class="text-center mb-2 text-primary-black dark:text-primary-white">
+            ({tag.altTitle})
+        </h2>
     {/if}
 </div>
 <div in:fade class="flex flex-wrap flex-row-reverse justify-between">
@@ -186,11 +291,15 @@
         <hr class="mt-4" />
     {/if}
     {#if tag.sheetMusic}
-    <h2 class="text-xl text-center mt-4 uppercase font-medium">
-        Sheet Music
-    </h2>
-    <h3 class="text-lg text-center mt-2 mb-4"><a href={tag.sheetMusic.url} download={`${tag.title} (${tag.id})`}>Download ⬇️</a></h3>
-    <!-- <pre>{JSON.stringify(tag.sheetMusic, null, 4)}</pre> -->
+        <h2 class="text-xl text-center mt-4 uppercase font-medium">
+            Sheet Music
+        </h2>
+        <h3 class="text-lg text-center mt-2 mb-4">
+            <a href={tag.sheetMusic.url} download={`${tag.title} (${tag.id})`}
+                >Download ⬇️</a
+            >
+        </h3>
+        <!-- <pre>{JSON.stringify(tag.sheetMusic, null, 4)}</pre> -->
         <SheetMusic sheetMusic={tag.sheetMusic} />
     {/if}
 </div>

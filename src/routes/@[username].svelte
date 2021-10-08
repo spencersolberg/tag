@@ -73,7 +73,13 @@
     favorites = null;
     getFavorites().then((favs) => (favorites = favs));
 </script>
-
+<svelte:head>
+    <title>Tags.Town - @{profile.username}</title>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@TagsDotTown" />
+    <meta name="twitter:title" content="Tags.Town - {profile.display_name}" />
+    <meta name="twitter:description" content="@{profile.username} is on Tags.Town" />
+</svelte:head>
 <div class="flex flex-col ">
     <div class="flex max-w-lg">
         {#if profile?.avatar}
