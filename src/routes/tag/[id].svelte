@@ -72,7 +72,8 @@
         name="twitter:description"
         content={'Check out "' + tag.title + '" on Tags.Town'}
     />
-    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
     <!-- <meta name="twitter:image" content="https://html.sammy-codes.com/images/large-profile.jpg" /> -->
 </svelte:head>
 <div class="flex flex-col lg:flex-row lg:justify-between mb-2">
@@ -100,7 +101,7 @@
         >
             {#if !favorited}
                 <svg
-                    class="w-12 h-12 text-primary-white"
+                    class="w-12 h-12 text-primary-black dark:text-primary-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -114,9 +115,22 @@
                 >
             {:else if favorited}
                 <svg
-                    class="w-12 h-12 text-primary-red"
+                    class="w-12 h-12 text-primary-red hidden dark:block"
                     fill="currentColor"
                     stroke="white"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    onmousedown="party.confetti(this)"
+                    ><path
+                        fill-rule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clip-rule="evenodd"
+                    /></svg
+                >
+                <svg
+                    class="w-12 h-12 text-primary-red dark:hidden"
+                    fill="currentColor"
+                    stroke="black"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                     onmousedown="party.confetti(this)"
