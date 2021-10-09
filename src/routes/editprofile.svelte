@@ -61,7 +61,7 @@
         if (cached.length < profile.favorites.length) {
             return await retrieveFavorites();
         }
-        return data.map((t) => t.json);
+        return data.map((t) => t.json).sort((a, b) => profile.favorites.indexOf(a.id) - profile.favorites.indexOf(b.id));
     };
 
     const uploadAvatar = async () => {
