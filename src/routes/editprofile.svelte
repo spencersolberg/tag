@@ -21,6 +21,7 @@
     import { goto } from "$app/navigation";
     import ErrorCard from "../components/errorCard.svelte";
     import SuccessCard from "../components/successCard.svelte";
+    import SortableList from "svelte-sortable-list";
 
     if (browser && !session) goto("/auth");
 
@@ -33,6 +34,35 @@
     let noAvatar = false;
     let showOldAvatar = true;
     let fileValue;
+    let favorites = null;
+    let source;
+
+    const retrieveFavorites = async () => {
+        if (!profile?.favorites) {
+            return null;
+        }
+        const url = "https://api.tags.town/tags/";
+        const res = await fetch(url + profile.favorites.join(","));
+        const data = await res.json();
+        console.log(data);
+        return data;
+    };
+
+    const getFavorites = async () => {
+        if (!profile.favorites) {
+            return null;
+        }
+        const { data, error } = await supabase
+            .from("tags_cache")
+            .select()
+            .in("id", profile.favorites);
+        if (error) console.error(error);
+        const cached = data.map((t) => t.json);
+        if (cached.length < profile.favorites.length) {
+            return await retrieveFavorites();
+        }
+        return data.map((t) => t.json);
+    };
 
     const uploadAvatar = async () => {
         if (!noAvatar && newAvatar) {
@@ -54,7 +84,7 @@
             return;
         }
         if (!profile.part) {
-            error ={ message: "You need to choose a voice part."};
+            error = { message: "You need to choose a voice part." };
             return;
         }
         const { data, error: err } = await supabase
@@ -86,7 +116,8 @@
                     avatar: noAvatar
                         ? null
                         : avatarUpload?.file ?? profile.avatar,
-                    part: profile.part
+                    part: profile.part,
+                    favorites: favorites?.map(f => f.id) ?? []
                 })
                 .eq("user_id", supabase.auth.user().id);
             if (err2) {
@@ -109,6 +140,17 @@
             noAvatar = false;
         };
     };
+
+    const sortList = (ev) => {
+        favorites = ev.detail;
+        console.log(favorites);
+    };
+
+    const removeFavorite = (id) => {
+        favorites = favorites.filter(f => f.id != id);
+    }
+
+    getFavorites().then((favs) => (favorites = favs));
 </script>
 
 <h1
@@ -193,6 +235,46 @@
                 <option value="Tenor">Tenor</option>
                 <option value="Other">Other</option>
             </select>
+            {#if favorites}
+                <h2
+                    class="text-xl mt-4 mb-2 text-primary-black dark:text-primary-white"
+                >
+                    Favorite Tags
+                </h2>
+                <SortableList
+                    list={favorites}
+                    key="id"
+                    on:sort={sortList}
+                    let:item
+                >
+                    <div
+                        class="flex justify-between dark:bg-primary-white bg-primary-black w-full my-1 px-2 py-2 rounded-md"
+                    >
+                        <p
+                            class=" dark:text-primary-black text-primary-white  select-none"
+                        >
+                            {item.title} - {item.id}
+                        </p>
+                        <button
+                            class="transition-transform transform transform-gpu motion-safe:hover:scale-110 motion-safe:active:scale-95" on:click={() => removeFavorite(item.id)}
+                        >
+                            <svg
+                                class="w-6 h-6 text-primary-red"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                ><path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                /></svg
+                            >
+                        </button>
+                    </div>
+                </SortableList>
+            {/if}
             <div class="container flex justify-center mx-auto w-full">
                 <button
                     class="border-2 p-4 my-2 mx-4 rounded-md bg-primary-black text-primary-white border-primary-black hover:bg-primary-white hover:text-primary-black dark:bg-primary-white dark:text-primary-black dark:border-primary-white dark:hover:bg-primary-black dark:hover:text-primary-white"

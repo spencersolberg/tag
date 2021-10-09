@@ -35,7 +35,6 @@
         const url = "https://api.tags.town/tags/";
         const res = await fetch(url + profile.favorites.join(","));
         const data = await res.json();
-        console.log(data);
         return data;
     };
 
@@ -52,7 +51,7 @@
         if (cached.length < profile.favorites.length) {
             return await retrieveFavorites();
         }
-        return data.map(t => t.json);
+        return data.map(t => t.json).sort((a, b) => profile.favorites.indexOf(a.id) - profile.favorites.indexOf(b.id));
     };
 
     if (!$session) goto("/auth");
@@ -71,7 +70,10 @@
     // }
 
     favorites = null;
-    getFavorites().then((favs) => (favorites = favs));
+    getFavorites().then((favs) => {
+        favorites = favs;
+        console.log(profile.favorites, favorites.map(f => f.id));
+    });
 </script>
 <svelte:head>
     <title>Tags.Town - @{profile.username}</title>
