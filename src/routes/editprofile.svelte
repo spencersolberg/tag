@@ -61,7 +61,13 @@
         if (cached.length < profile.favorites.length) {
             return await retrieveFavorites();
         }
-        return data.map((t) => t.json).sort((a, b) => profile.favorites.indexOf(a.id) - profile.favorites.indexOf(b.id));
+        return data
+            .map((t) => t.json)
+            .sort(
+                (a, b) =>
+                    profile.favorites.indexOf(a.id) -
+                    profile.favorites.indexOf(b.id)
+            );
     };
 
     const uploadAvatar = async () => {
@@ -117,7 +123,7 @@
                         ? null
                         : avatarUpload?.file ?? profile.avatar,
                     part: profile.part,
-                    favorites: favorites?.map(f => f.id) ?? []
+                    favorites: favorites?.map((f) => f.id) ?? [],
                 })
                 .eq("user_id", supabase.auth.user().id);
             if (err2) {
@@ -147,7 +153,12 @@
     };
 
     const removeFavorite = (id) => {
-        favorites = favorites.filter(f => f.id != id);
+        favorites = favorites.filter((f) => f.id != id);
+    };
+
+    const elevateFavorite = (id) => {
+        let index = favorites.findIndex((f) => f.id == id);
+        [favorites[index - 1], favorites[index]] = [favorites[index], favorites[index - 1]];    
     }
 
     getFavorites().then((favs) => (favorites = favs));
@@ -246,32 +257,57 @@
                     key="id"
                     on:sort={sortList}
                     let:item
+                    let:index
                 >
                     <div
-                        class="flex justify-between dark:bg-primary-white bg-primary-black w-full my-1 px-2 py-2 rounded-md"
+                        class="flex justify-between dark:bg-primary-white bg-primary-black w-full my-1 px-2 pt-2 pb-1 rounded-md"
                     >
                         <p
                             class=" dark:text-primary-black text-primary-white  select-none"
                         >
-                            {item.title} - {item.id}
+                            {item.title}
                         </p>
-                        <button
-                            class="transition-transform transform transform-gpu motion-safe:hover:scale-110 motion-safe:active:scale-95" on:click={() => removeFavorite(item.id)}
-                        >
-                            <svg
-                                class="w-6 h-6 text-primary-red"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                                ><path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                /></svg
+                        <div>
+                            {#if index}
+                            <button
+                                class="transition-transform transform transform-gpu motion-safe:hover:scale-110 motion-safe:active:scale-95"
+                                on:click={() => elevateFavorite(item.id)}
                             >
-                        </button>
+                                <svg
+                                    class="w-6 h-6 dark:text-primary-black text-primary-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    ><path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 15l7-7 7 7"
+                                    /></svg
+                                >
+                            </button>
+                            {/if}
+                            <button
+                                class="transition-transform transform transform-gpu motion-safe:hover:scale-110 motion-safe:active:scale-95"
+                                on:click={() => removeFavorite(item.id)}
+                            >
+                                <svg
+                                    class="w-6 h-6 text-primary-red"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    ><path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    /></svg
+                                >
+                            </button>
+                            
+                        </div>
                     </div>
                 </SortableList>
             {/if}
